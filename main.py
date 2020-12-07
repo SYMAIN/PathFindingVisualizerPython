@@ -1,6 +1,6 @@
 import pygame
 
-from pathFinding_2.NODEClass import NODE
+from NODEClass import NODE
 
 """
 col and row are mostly for position on display
