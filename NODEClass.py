@@ -1,4 +1,5 @@
-from functions import *
+import pygame
+import functions as f
 
 
 class NODE:
@@ -27,11 +28,10 @@ class NODE:
         self.color = color
         self.fill = fill
 
-    def moveCell(self, cell):
-        cell.col, self.col = self.col, cell.col
-        cell.row, self.row = self.row, cell.row
-
     def resetCell(self):
         self.state = 0
         self.color = -1
         self.fill = False
+
+    def equal(self,node):
+        return self.x == node.x and self.y == node.y
