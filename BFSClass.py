@@ -22,15 +22,9 @@ class BFS:
             self.draw()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    return False
+                    return []
             if node.equal(self.end):
-                current = node
-                while not current.equal(self.start):
-                    current = current.parent
-                    current.setCell(4, COLOR["PURPLE"], True)
-                self.start.setCell(1, COLOR["GREEN"], True)
-                self.end.setCell(2, COLOR["RED"], True)
-                return True
+                return f.createPath(self.start, self.end)
 
             for y, x in (0, 1), (1, 0), (0, -1), (-1, 0):
                 newPos = (node.y + y, node.x + x)

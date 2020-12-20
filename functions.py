@@ -26,5 +26,27 @@ def valid(x, y):
 
 
 def drawPath(alg, start, end, walls, grid):
+    path = []
     if alg == "BFS":
-        return BFS(start, end, walls, grid).main()
+        path = BFS(start, end, walls, grid).main()
+
+    if len(path) == 0:
+        return False
+    for node in path:
+        node.setCell(4, COLOR["PURPLE"], True)
+    initStartEnd(start, end)
+    return True
+
+
+def createPath(start, end):
+    path = []
+    current = end
+    while not current.equal(start):
+        current = current.parent
+        path.append(current)
+    return path
+
+
+def initStartEnd(start, end):
+    start.setCell(1, COLOR["GREEN"], True)
+    end.setCell(2, COLOR["RED"], True)

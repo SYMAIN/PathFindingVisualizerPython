@@ -1,4 +1,5 @@
 import pygame
+import functions as f
 
 class NODE:
     def __init__(self, y, x, size):
@@ -31,7 +32,7 @@ class NODE:
 
     def setToWall(self):
         self.state = 3
-        self.color = COLOR["DARKGREY"]
+        self.color = f.COLOR["DARKGREY"]
         self.fill = True
 
     def resetCell(self):

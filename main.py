@@ -36,9 +36,8 @@ class DISPLAY:
         self.grid = f.createGrid()
 
         self.start = self.grid[20][20]  # random position on the grid
-        self.start.setCell(1, COLOR["GREEN"], True)
         self.end = self.grid[20][21]  # random position on the grid
-        self.end.setCell(2, COLOR["RED"], True)
+        f.initStartEnd(self.start, self.end)
 
     def run(self):  # main loop
         run = True
