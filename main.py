@@ -83,7 +83,7 @@ class DISPLAY:
                     if event.key == pygame.K_z:
                         self.clearALL()
                     if event.key == pygame.K_SPACE:
-                        if not f.drawPath("BFS", self.start, self.end, self.walls, self.grid):
+                        if not f.drawPath("Astar", self.start, self.end, self.walls, self.grid):
                             run = False
 
             # update
@@ -126,6 +126,8 @@ class DISPLAY:
         for i in self.grid:
             for j in i:
                 if j.state != 1 and j.state != 2 and j.state != -1:
+                    if j.state == 3:
+                        self.walls.remove(j)
                     j.resetCell()
 
 

@@ -1,3 +1,4 @@
+from ASTARClass import Astar
 from BFSClass import BFS
 from NODEClass import NODE
 from main import *
@@ -29,6 +30,8 @@ def drawPath(alg, start, end, walls, grid):
     path = []
     if alg == "BFS":
         path = BFS(start, end, walls, grid).main()
+    elif alg == "Astar":
+        path = Astar(start, end, walls, grid).main()
 
     if len(path) == 0:
         return False
@@ -44,7 +47,7 @@ def createPath(start, end):
     while not current.posEqual(start):
         current = current.parent
         path.append(current)
-    return path
+    return path[::-1]
 
 
 def initStartEnd(start, end):
