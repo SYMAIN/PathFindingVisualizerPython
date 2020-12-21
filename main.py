@@ -91,7 +91,7 @@ class DISPLAY:
                 mouseY, mouseX = f.getMousePos()  # new position
                 if f.valid(mouseX, mouseY) and startEndPos != (mouseY, mouseX):
                     new = self.grid[mouseY][mouseX]
-                    if new.state != 3 and new.state != 2 and new.state != 1:
+                    if new.state == 0:
                         SE = self.grid[startEndPos[0]][startEndPos[1]]
                         new.setCell(SE.state, SE.color, SE.fill)
                         SE.resetCell()
@@ -105,7 +105,7 @@ class DISPLAY:
                 mouseY, mouseX = f.getMousePos()
                 if f.valid(mouseX, mouseY):
                     current = self.grid[mouseY][mouseX]
-                    if current.state != 1 and current.state != 2:
+                    if current.state == 0 and current not in self.walls:
                         current.setCell(3, COLOR["DARKGREY"], True)
                         self.walls.append(current)
 
