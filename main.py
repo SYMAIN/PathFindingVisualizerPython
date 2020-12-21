@@ -117,17 +117,10 @@ class DISPLAY:
                         current.setCell(0, -1, False)
                         self.walls.remove(current)
 
-            self.draw(screen)
+            f.reDrawGrid(self.grid)
             pygame.display.update()
             clock.tick(120)
         pygame.display.quit()
-
-    def draw(self, screen):  # draw all graphic
-        screen.fill(COLOR["GREY"])  # set background color
-        # draw grid
-        for i in self.grid:
-            for cell in i:
-                cell.draw(screen)
 
     def clearALL(self):
         for i in self.grid:

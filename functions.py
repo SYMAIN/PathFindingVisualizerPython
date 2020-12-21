@@ -41,7 +41,7 @@ def drawPath(alg, start, end, walls, grid):
 def createPath(start, end):
     path = []
     current = end
-    while not current.equal(start):
+    while not current.posEqual(start):
         current = current.parent
         path.append(current)
     return path
@@ -50,3 +50,12 @@ def createPath(start, end):
 def initStartEnd(start, end):
     start.setCell(1, COLOR["GREEN"], True)
     end.setCell(2, COLOR["RED"], True)
+
+
+def reDrawGrid(grid):
+    screen.fill(COLOR["GREY"])  # set background color
+    # draw grid
+    for i in grid:
+        for cell in i:
+            cell.draw(screen)
+    pygame.display.update()
