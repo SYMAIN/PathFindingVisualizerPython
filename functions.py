@@ -28,16 +28,17 @@ def valid(x, y):
 
 def drawPath(alg, start, end, walls, grid):
     path = []
+    clearPath(grid)
     if alg == "BFS":
         path = BFS(start, end, walls, grid).main()
     elif alg == "Astar":
         path = Astar(start, end, walls, grid).main()
 
-    if len(path) == 0:
+    initStartEnd(start, end)
+    if path is None:
         return False
     for node in path:
         node.setCell(4, COLOR["PURPLE"], True)
-    initStartEnd(start, end)
     return True
 
 
@@ -45,9 +46,10 @@ def createPath(start, end):
     path = []
     current = end
     while not current.posEqual(start):
-        current = current.parent
         path.append(current)
-    return path[::-1]
+        current = current.parent
+    path.pop(0)
+    return path
 
 
 def initStartEnd(start, end):
@@ -62,3 +64,10 @@ def reDrawGrid(grid):
         for cell in i:
             cell.draw(screen)
     pygame.display.update()
+
+
+def clearPath(grid):
+    for i in grid:
+        for j in i:
+            if j.state == 4 or j.state == 5 or j.state == 6:
+                j.resetCell()

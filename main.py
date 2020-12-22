@@ -84,7 +84,9 @@ class DISPLAY:
                         self.clearALL()
                     if event.key == pygame.K_SPACE:
                         if not f.drawPath("Astar", self.start, self.end, self.walls, self.grid):
-                            run = False
+                            print("Path not found")
+                    if event.key == pygame.K_x:
+                        f.clearPath(self.grid)
 
             # update
             if startEnd[0]:

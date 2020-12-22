@@ -10,7 +10,7 @@ class NODE:
         self.size = size
 
         self.color = -1
-        self.state = 0  # 0=space, 1=start, 2=end, 3=wall, 4= border
+        self.state = 0  # -1=border, 0=space, 1=start, 2=end, 3=wall, 4=node, 5=neighbors,6=visited
         self.fill = 0  # cell color fill or empty
 
         self.parent = -1
