@@ -1,6 +1,6 @@
 import functions as f
 from GRAPHClass import GRAPH
-from main import COLOR, pygame
+from main import pygame
 
 
 class BFS(GRAPH):

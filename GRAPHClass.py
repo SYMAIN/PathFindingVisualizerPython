@@ -1,7 +1,4 @@
-import math
-
-import functions as f
-from main import pygame, COLOR
+from main import pygame
 
 
 class GRAPH:

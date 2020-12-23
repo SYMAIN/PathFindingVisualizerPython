@@ -43,6 +43,20 @@ class DISPLAY:
         run = True
         clock = pygame.time.Clock()
 
+        bnt = f.createButton(654, 24, 100, 50, COLOR["BLUE"], "HELLO")
+        while run:
+            # update events
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    run = False
+            self.update()
+            # draw
+            f.reDrawGrid(self.grid)
+            bnt.draw(screen)
+            clock.tick(120)
+
+        pygame.display.quit()
+    def update(self):
         # events
         startEnd = (False, -1)  # drag, id--> 0=start,1=end
         startEndPos = (0, 0)
@@ -50,86 +64,79 @@ class DISPLAY:
         wallDrag = False
         removeDrag = False
 
-        while run:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                if event.type == pygame.MOUSEBUTTONDOWN:  # mouse button pressed
-                    mouseY, mouseX = f.getMousePos()
-                    if f.valid(mouseX, mouseY) and event.button == 1:
-                        state = self.grid[mouseY][mouseX].state
-                        if state == 1:  # current state is the start
-                            startEnd = (True, 0)
-                            startEndPos = (mouseY, mouseX)
-                        elif state == 2:  # current state is the end
-                            startEnd = (True, 1)
-                            startEndPos = (mouseY, mouseX)
-                        elif state == 0 or state == 3:
-                            wallDrag = True
-                    if event.button == 3:
-                        mouseY, mouseX = f.getMousePos()
-                        current = self.grid[mouseY][mouseX]
-                        if current.state == 3 or current.state == 0:
-                            removeDrag = True
-
-                if event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1:
-                        startEnd = (False, -1)
-                        wallDrag = False
-                    if event.button == 3:
-                        removeDrag = False
-
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_z:
-                        self.clearALL()
-                    if event.key == pygame.K_SPACE:
-                        f.drawPath("Astar", self.start, self.end, self.walls, self.grid)
-                    if event.key == pygame.K_x:
-                        f.clearPath(self.grid)
-
-            # update
-            if startEnd[0]:
-                mouseY, mouseX = f.getMousePos()  # new position
-                if f.valid(mouseX, mouseY) and startEndPos != (mouseY, mouseX):
-                    new = self.grid[mouseY][mouseX]
-                    if new.state == 0:
-                        SE = self.grid[startEndPos[0]][startEndPos[1]]
-                        new.setCell(SE.state, SE.color, SE.fill)
-                        SE.resetCell()
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:  # mouse button pressed
+                mouseY, mouseX = f.getMousePos()
+                # left click down
+                if f.valid(mouseX, mouseY) and event.button == 1:
+                    state = self.grid[mouseY][mouseX].state
+                    if state == 1:  # current state is the start
+                        startEnd = (True, 0)
                         startEndPos = (mouseY, mouseX)
-                        if startEnd[1] == 0:
-                            self.start = new
-                        elif startEnd[1] == 1:
-                            self.end = new
-
-            if wallDrag:
-                mouseY, mouseX = f.getMousePos()
-                if f.valid(mouseX, mouseY):
+                    elif state == 2:  # current state is the end
+                        startEnd = (True, 1)
+                        startEndPos = (mouseY, mouseX)
+                    elif state == 0 or state == 3:
+                        wallDrag = True
+                # right click down
+                if event.button == 3:
+                    mouseY, mouseX = f.getMousePos()
                     current = self.grid[mouseY][mouseX]
-                    if current.state == 0 and current not in self.walls:
-                        current.setWall()
-                        self.walls.append(current)
+                    if current.state == 3 or current.state == 0:
+                        removeDrag = True
 
-            if removeDrag:
-                mouseY, mouseX = f.getMousePos()
-                if f.valid(mouseX, mouseY):
-                    current = self.grid[mouseY][mouseX]
-                    if current.state == 3:
-                        current.setCell(0, -1, False)
-                        self.walls.remove(current)
+            if event.type == pygame.MOUSEBUTTONUP:
+                # left click up
+                if event.button == 1:
+                    startEnd = (False, -1)
+                    wallDrag = False
+                # right click up
+                if event.button == 3:
+                    removeDrag = False
 
-            f.reDrawGrid(self.grid)
-            pygame.display.update()
-            clock.tick(120)
-        pygame.display.quit()
+            if event.type == pygame.KEYDOWN:
+                # z key click -> clear all walls/paths
+                if event.key == pygame.K_z:
+                    f.clearALL(self.grid, self.walls)
+                # space key click -> start alg
+                if event.key == pygame.K_SPACE:
+                    f.drawPath("Astar", self.start, self.end, self.walls, self.grid)
+                # x key click -> clear the paths created
+                if event.key == pygame.K_x:
+                    f.clearPath(self.grid)
 
-    def clearALL(self):
-        for i in self.grid:
-            for j in i:
-                if j.state != 1 and j.state != 2 and j.state != -1:
-                    if j.state == 3:
-                        self.walls.remove(j)
-                    j.resetCell()
+        # move start/end
+        if startEnd[0]:
+            mouseY, mouseX = f.getMousePos()  # new position
+            if f.valid(mouseX, mouseY) and startEndPos != (mouseY, mouseX):
+                new = self.grid[mouseY][mouseX]
+                if new.state == 0:
+                    SE = self.grid[startEndPos[0]][startEndPos[1]]
+                    new.setCell(SE.state, SE.color, SE.fill)
+                    SE.resetCell()
+                    startEndPos = (mouseY, mouseX)
+                    if startEnd[1] == 0:
+                        self.start = new
+                    elif startEnd[1] == 1:
+                        self.end = new
+
+        # add walls
+        if wallDrag:
+            mouseY, mouseX = f.getMousePos()
+            if f.valid(mouseX, mouseY):
+                current = self.grid[mouseY][mouseX]
+                if current.state == 0 and current not in self.walls:
+                    current.setWall()
+                    self.walls.append(current)
+
+        # remove walls
+        if removeDrag:
+            mouseY, mouseX = f.getMousePos()
+            if f.valid(mouseX, mouseY):
+                current = self.grid[mouseY][mouseX]
+                if current.state == 3:
+                    current.setCell(0, -1, False)
+                    self.walls.remove(current)
 
 
 if __name__ == '__main__':

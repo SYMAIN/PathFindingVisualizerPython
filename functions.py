@@ -1,6 +1,7 @@
 from ASTARClass import Astar
 from BFSClass import BFS
 from NODEClass import NODE
+from BUTTONClass import button
 from main import *
 
 
@@ -73,3 +74,15 @@ def clearPath(grid):
         for j in i:
             if j.state == 4 or j.state == 5 or j.state == 6:
                 j.resetCell()
+
+
+def clearALL(grid, walls):
+    for i in grid:
+        for j in i:
+            if j.state != 1 and j.state != 2 and j.state != -1:
+                if j.state == 3:
+                    walls.remove(j)
+                j.resetCell()
+
+def createButton(col, row, l, w, color, msg):
+    return button(col, row, l, w, color, msg)
