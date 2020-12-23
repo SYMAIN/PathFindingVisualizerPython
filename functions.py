@@ -36,9 +36,11 @@ def drawPath(alg, start, end, walls, grid):
 
     initStartEnd(start, end)
     if path is None:
+        print("Path not Found")
         return False
     for node in path:
         node.setCell(4, COLOR["PURPLE"], True)
+    print("Path Found")
     return True
 
 
@@ -53,8 +55,8 @@ def createPath(start, end):
 
 
 def initStartEnd(start, end):
-    start.setCell(1, COLOR["GREEN"], True)
-    end.setCell(2, COLOR["RED"], True)
+    start.setStart()
+    end.setEnd()
 
 
 def reDrawGrid(grid):

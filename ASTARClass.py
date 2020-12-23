@@ -2,7 +2,7 @@ import math
 
 import functions as f
 from GRAPHClass import GRAPH
-from main import COLOR, pygame
+from main import pygame
 
 inf = float("inf")
 
@@ -22,7 +22,8 @@ class Astar(GRAPH):
         while len(self.qu) != 0:
             node = self.lowestCost(nodesValue)
             self.visited[node] = True
-            node.setCell(4, COLOR["TURQUOISE"], True)
+            node.setNode()
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return []
@@ -30,23 +31,25 @@ class Astar(GRAPH):
                 return f.createPath(self.start, self.end)
 
             for y, x in (-1, 0), (0, -1), (0, 1), (1, 0):
-                newPos = (node.y + y, node.x + x)
-                if f.valid(newPos[1], newPos[0]):
-                    child = self.grid[newPos[0]][newPos[1]]
+                newY, newX = node.y + y, node.x + x
+                if f.valid(newX, newY):
+                    child = self.grid[newY][newX]
+
                     tentative_gScore = nodesValue[node.y, node.x][0] + 1
                     if tentative_gScore < nodesValue[child.y, child.x][0] and child not in self.visited and child not in self.walls:
                         child.parent = node
-                        child.setCell(5, COLOR["ORANGE"], True)
+
                         nodesValue[child.y, child.x][0] = tentative_gScore
                         nodesValue[child.y, child.x][1] = self.calcHeur(child, self.end)
                         nodesValue[child.y, child.x][2] = nodesValue[child.y, child.x][0] + \
                                                           nodesValue[child.y, child.x][1]
                         if child not in self.qu:
                             self.qu.append(child)
+                        child.setNeighbor()
 
             f.reDrawGrid(self.grid)
-            node.setCell(6, COLOR["YELLOW"], True)
-            self.clock.tick(120)
+            node.setVisted()
+            self.clockTick()
 
     def lowestCost(self, nodes):
         node = self.qu[0]

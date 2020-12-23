@@ -1,4 +1,5 @@
 import pygame
+from main import COLOR
 
 
 class NODE:
@@ -34,3 +35,21 @@ class NODE:
 
     def posEqual(self, node):
         return self.x == node.x and self.y == node.y
+
+    def setWall(self):
+        self.setCell(3, COLOR["DARKGREY"], True)
+
+    def setNode(self):
+        self.setCell(4, COLOR["TURQUOISE"], True)
+
+    def setNeighbor(self):
+        self.setCell(5, COLOR["ORANGE"], True)
+
+    def setVisted(self):
+        self.setCell(6, COLOR["YELLOW"], True)
+
+    def setStart(self):
+        self.setCell(1, COLOR["GREEN"], True)
+
+    def setEnd(self):
+        self.setCell(2, COLOR["RED"], True)

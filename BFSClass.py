@@ -9,8 +9,9 @@ class BFS(GRAPH):
         while len(self.qu) != 0:
             node = self.qu.pop(0)
             self.visited[node] = True
-            node.setCell(4, COLOR["TURQUOISE"], True)
+            node.setNode()
             f.reDrawGrid(self.grid)
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return []
@@ -18,15 +19,15 @@ class BFS(GRAPH):
                 return f.createPath(self.start, self.end)
 
             for y, x in (-1, 0), (0, -1), (0, 1), (1, 0):
-                newPos = (node.y + y, node.x + x)
-                if f.valid(newPos[1], newPos[0]):
-                    child = self.grid[newPos[0]][newPos[1]]
+                newY, newX = node.y + y, node.x + x
+                if f.valid(newX, newY):
+                    child = self.grid[newY][newX]
 
                     if self.validPos(child):
                         self.qu.append(child)
                         child.parent = node
-                        child.setCell(5, COLOR["ORANGE"], True)
+                        child.setNeighbor()
 
             f.reDrawGrid(self.grid)
-            node.setCell(6, COLOR["YELLOW"], True)
-            self.clock.tick(120)
+            node.setVisted()
+            self.clockTick()

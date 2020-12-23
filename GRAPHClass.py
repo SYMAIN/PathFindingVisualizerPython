@@ -17,3 +17,6 @@ class GRAPH:
 
     def validPos(self, child):
         return child not in self.visited and child not in self.qu and child not in self.walls
+
+    def clockTick(self):
+        self.clock.tick(40)

@@ -83,8 +83,7 @@ class DISPLAY:
                     if event.key == pygame.K_z:
                         self.clearALL()
                     if event.key == pygame.K_SPACE:
-                        if not f.drawPath("Astar", self.start, self.end, self.walls, self.grid):
-                            print("Path not found")
+                        f.drawPath("Astar", self.start, self.end, self.walls, self.grid)
                     if event.key == pygame.K_x:
                         f.clearPath(self.grid)
 
@@ -108,7 +107,7 @@ class DISPLAY:
                 if f.valid(mouseX, mouseY):
                     current = self.grid[mouseY][mouseX]
                     if current.state == 0 and current not in self.walls:
-                        current.setCell(3, COLOR["DARKGREY"], True)
+                        current.setWall()
                         self.walls.append(current)
 
             if removeDrag:
