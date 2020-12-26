@@ -1,7 +1,7 @@
 from ASTARClass import Astar
 from BFSClass import BFS
-from NODEClass import NODE
 from BUTTONClass import button
+from NODEClass import NODE
 from main import *
 
 
@@ -83,6 +83,7 @@ def clearALL(grid, walls):
                 if j.state == 3:
                     walls.remove(j)
                 j.resetCell()
+
 
 def createButton(col, row, l, w, color, msg):
     return button(col, row, l, w, color, msg)
