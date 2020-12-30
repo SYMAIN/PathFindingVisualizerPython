@@ -27,13 +27,13 @@ def valid(x, y):
     return 0 < x < width - 1 and 0 < y < height - 1
 
 
-def drawPath(alg, start, end, walls, grid):
+def drawPath(alg, start, end, walls, grid, buttons):
     path = []
     clearPath(grid)
     if alg == "BFS":
-        path = BFS(start, end, walls, grid).main()
+        path = BFS(start, end, walls, grid, buttons).main()
     elif alg == "Astar":
-        path = Astar(start, end, walls, grid).main()
+        path = Astar(start, end, walls, grid, buttons).main()
 
     initStartEnd(start, end)
     if path is None:
@@ -60,12 +60,14 @@ def initStartEnd(start, end):
     end.setEnd()
 
 
-def reDrawGrid(grid):
+def reDrawScreen(grid, buttons):
     screen.fill(COLOR["GREY"])  # set background color
     # draw grid
     for i in grid:
         for cell in i:
             cell.draw(screen)
+    for bnt in buttons.values():
+        bnt.draw(screen)
     pygame.display.update()
 
 
@@ -85,5 +87,5 @@ def clearALL(grid, walls):
                 j.resetCell()
 
 
-def createButton(col, row, l, w, color, msg):
-    return button(col, row, l, w, color, msg)
+def createButton(col, row, l, w, color, hl, msg, id):
+    return button(col, row, l, w, color, hl, msg, id)

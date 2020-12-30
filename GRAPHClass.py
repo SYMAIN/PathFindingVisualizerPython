@@ -1,12 +1,14 @@
 from main import pygame
+import functions as f
 
 
 class GRAPH:
-    def __init__(self, start, end, walls, grid):
+    def __init__(self, start, end, walls, grid, buttons):
         self.start = start
         self.end = end
         self.walls = walls
         self.grid = grid
+        self.buttons = buttons
 
         self.qu = [self.start]
         self.visited = {}
@@ -17,3 +19,6 @@ class GRAPH:
 
     def clockTick(self):
         self.clock.tick(40)
+
+    def drawScreen(self):
+        f.reDrawScreen(self.grid, self.buttons)

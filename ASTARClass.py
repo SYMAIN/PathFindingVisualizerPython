@@ -8,6 +8,10 @@ inf = float("inf")
 
 
 class Astar(GRAPH):
+
+    def __init__(self, start, end, walls, grid, buttons):
+        super().__init__(start, end, walls, grid, buttons)
+
     def main(self):
         nodesValue = {}
         for i in range(len(self.grid)):
@@ -22,7 +26,8 @@ class Astar(GRAPH):
         while len(self.qu) != 0:
             node = self.lowestCost(nodesValue)
             self.visited[node] = True
-            node.setNode()
+
+            self.drawScreen()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -47,7 +52,7 @@ class Astar(GRAPH):
                             self.qu.append(child)
                         child.setNeighbor()
 
-            f.reDrawGrid(self.grid)
+            self.drawScreen()
             node.setVisted()
             self.clockTick()
 
@@ -57,6 +62,7 @@ class Astar(GRAPH):
             if nodes[item.y, item.x][2] < nodes[node.y, node.x][2]:
                 node = item
         self.qu.remove(node)
+        node.setNode()
         return node
 
     def calcHeur(self, current, end):

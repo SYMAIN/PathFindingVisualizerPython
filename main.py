@@ -50,7 +50,13 @@ class DISPLAY:
         wallDrag = False
         removeDrag = False
 
-        bnt = f.createButton(654, 24, 100, 50, COLOR["BLUE"], "HELLO")
+        bnt = f.createButton(654, 24, 50, 100, COLOR["BLUE"], COLOR["ORANGE"], "HELLO", "test")
+        bnt2 = f.createButton(654, 104, 50, 100, COLOR["GREEN"], COLOR["YELLOW"], "WORLD", "test2")
+
+        buttons = {}
+        buttons["test"] = bnt
+        buttons["test2"] = bnt2
+
         while run:
             # update events
             for event in pygame.event.get():
@@ -58,17 +64,25 @@ class DISPLAY:
                     run = False
                 if event.type == pygame.MOUSEBUTTONDOWN:  # mouse button pressed
                     mouseY, mouseX = f.getMousePos()
+
                     # left click down
-                    if f.valid(mouseX, mouseY) and event.button == 1:
-                        state = self.grid[mouseY][mouseX].state
-                        if state == 1:  # current state is the start
-                            startEnd = (True, 0)
-                            startEndPos = (mouseY, mouseX)
-                        elif state == 2:  # current state is the end
-                            startEnd = (True, 1)
-                            startEndPos = (mouseY, mouseX)
-                        elif state == 0 or state == 3:
-                            wallDrag = True
+                    if event.button == 1:
+                        if f.valid(mouseX, mouseY):
+                            state = self.grid[mouseY][mouseX].state
+                            if state == 1:  # current state is the start
+                                startEnd = (True, 0)
+                                startEndPos = (mouseY, mouseX)
+                            elif state == 2:  # current state is the end
+                                startEnd = (True, 1)
+                                startEndPos = (mouseY, mouseX)
+                            elif state == 0 or state == 3:
+                                wallDrag = True
+
+                        # check if button is clicked:
+                        for id, val in buttons.items():
+                            if val.ifClick(pygame.mouse.get_pos()):
+                                val.highlightButton()
+
                     # right click down
                     if event.button == 3:
                         mouseY, mouseX = f.getMousePos()
@@ -91,7 +105,7 @@ class DISPLAY:
                         f.clearALL(self.grid, self.walls)
                     # space key click -> start alg
                     if event.key == pygame.K_SPACE:
-                        f.drawPath("Astar", self.start, self.end, self.walls, self.grid)
+                        f.drawPath("Astar", self.start, self.end, self.walls, self.grid, buttons)
                     # x key click -> clear the paths created
                     if event.key == pygame.K_x:
                         f.clearPath(self.grid)
@@ -130,9 +144,10 @@ class DISPLAY:
                         self.walls.remove(current)
 
             # draw
-            f.reDrawGrid(self.grid)
+            f.reDrawScreen(self.grid, buttons)
             clock.tick(120)
         pygame.display.quit()
+
 
 if __name__ == '__main__':
     DISPLAY().run()

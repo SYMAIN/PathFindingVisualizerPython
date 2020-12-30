@@ -4,13 +4,16 @@ from main import pygame
 
 
 class BFS(GRAPH):
+
+    def __init__(self, start, end, walls, grid, buttons):
+        super().__init__(start, end, walls, grid, buttons)
+
     def main(self):
 
         while len(self.qu) != 0:
-            node = self.qu.pop(0)
+            node = self.getNode()
             self.visited[node] = True
-            node.setNode()
-            f.reDrawGrid(self.grid)
+            self.drawScreen()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -28,6 +31,10 @@ class BFS(GRAPH):
                         child.parent = node
                         child.setNeighbor()
 
-            f.reDrawGrid(self.grid)
+            self.drawScreen()
             node.setVisted()
             self.clockTick()
+    def getNode(self):
+        node = self.qu.pop(0)
+        node.setNode()
+        return node
