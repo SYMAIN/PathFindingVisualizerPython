@@ -89,3 +89,12 @@ def clearALL(grid, walls):
 
 def createButton(col, row, l, w, color, hl, msg, id):
     return button(col, row, l, w, color, hl, msg, id)
+
+def algButtons():
+    buttons = {}
+    bnt = f.createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
+    bnt2 = f.createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "AStar")
+
+    buttons["test"] = bnt
+    buttons["test2"] = bnt2
+    return buttons

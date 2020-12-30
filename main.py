@@ -50,20 +50,26 @@ class DISPLAY:
         wallDrag = False
         removeDrag = False
 
-        bnt = f.createButton(654, 24, 50, 100, COLOR["BLUE"], COLOR["ORANGE"], "HELLO", "test")
-        bnt2 = f.createButton(654, 104, 50, 100, COLOR["GREEN"], COLOR["YELLOW"], "WORLD", "test2")
-
-        buttons = {}
-        buttons["test"] = bnt
-        buttons["test2"] = bnt2
+        # init the algorithm selection buttons
+        buttons = f.algButtons()
 
         while run:
             # update events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+
+                mouseY, mouseX = f.getMousePos()
+
+                # highlight button when hovering over
+                for id, val in buttons.items():
+                    if not val.set:
+                        if val.onButton(pygame.mouse.get_pos()):
+                            val.highlightButton()
+                        else:
+                            val.unhighlightButton()
+
                 if event.type == pygame.MOUSEBUTTONDOWN:  # mouse button pressed
-                    mouseY, mouseX = f.getMousePos()
 
                     # left click down
                     if event.button == 1:
@@ -78,10 +84,12 @@ class DISPLAY:
                             elif state == 0 or state == 3:
                                 wallDrag = True
 
-                        # check if button is clicked:
+                        # check if button is clicked
                         for id, val in buttons.items():
-                            if val.ifClick(pygame.mouse.get_pos()):
-                                val.highlightButton()
+                            if val.onButton(pygame.mouse.get_pos()) and not val.set:
+                                val.set = True  # set its purpose
+                            else:
+                                val.set = False  # set its purpose
 
                     # right click down
                     if event.button == 3:
@@ -95,6 +103,7 @@ class DISPLAY:
                     if event.button == 1:
                         startEnd = (False, -1)
                         wallDrag = False
+
                     # right click up
                     if event.button == 3:
                         removeDrag = False
