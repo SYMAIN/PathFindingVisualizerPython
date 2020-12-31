@@ -39,6 +39,8 @@ class DISPLAY:
         self.end = self.grid[20][21]  # random position on the grid
         f.initStartEnd(self.start, self.end)
 
+        self.alg = 'BFS'  # default
+
     def run(self):  # main loop
         run = True
         clock = pygame.time.Clock()
@@ -59,18 +61,16 @@ class DISPLAY:
                 if event.type == pygame.QUIT:
                     run = False
 
-                mouseY, mouseX = f.getMousePos()
-
                 # highlight button when hovering over
-                for id, val in buttons.items():
-                    if not val.set:
+                for val in buttons.values():
+                    if val.id != self.alg:
                         if val.onButton(pygame.mouse.get_pos()):
                             val.highlightButton()
                         else:
                             val.unhighlightButton()
 
                 if event.type == pygame.MOUSEBUTTONDOWN:  # mouse button pressed
-
+                    mouseY, mouseX = f.getMousePos()
                     # left click down
                     if event.button == 1:
                         if f.valid(mouseX, mouseY):
@@ -85,11 +85,18 @@ class DISPLAY:
                                 wallDrag = True
 
                         # check if button is clicked
-                        for id, val in buttons.items():
-                            if val.onButton(pygame.mouse.get_pos()) and not val.set:
-                                val.set = True  # set its purpose
-                            else:
-                                val.set = False  # set its purpose
+                        for val in buttons.values():
+                            if val.set:
+                                if val.onButton(pygame.mouse.get_pos()) and val.id == self.alg:
+                                    val.set = True
+                                else:
+                                    val.set = False
+                            elif not val.set:
+                                if val.onButton(pygame.mouse.get_pos()) and val.id != self.alg:
+                                    val.set = True
+                                    self.alg = val.id
+                                else:
+                                    val.set = False
 
                     # right click down
                     if event.button == 3:
@@ -112,9 +119,13 @@ class DISPLAY:
                     # z key click -> clear all walls/paths
                     if event.key == pygame.K_z:
                         f.clearALL(self.grid, self.walls)
+
                     # space key click -> start alg
                     if event.key == pygame.K_SPACE:
-                        f.drawPath("Astar", self.start, self.end, self.walls, self.grid, buttons)
+                        a = f.drawPath(self.alg, self.start, self.end, self.walls, self.grid, buttons)
+                        if not a:
+                            run = False
+
                     # x key click -> clear the paths created
                     if event.key == pygame.K_x:
                         f.clearPath(self.grid)

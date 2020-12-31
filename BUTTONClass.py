@@ -15,7 +15,7 @@ class button:
         self.msg = msg
         self.id = id  # the purpose of the button
 
-        self.fontSize = 24
+        self.fontSize = 23
         self.fontColor = COLOR[('BLACK')]
         self.italic = True
         self.bold = True

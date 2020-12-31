@@ -32,16 +32,17 @@ def drawPath(alg, start, end, walls, grid, buttons):
     clearPath(grid)
     if alg == "BFS":
         path = BFS(start, end, walls, grid, buttons).main()
-    elif alg == "Astar":
+    elif alg == "ASTAR":
         path = Astar(start, end, walls, grid, buttons).main()
 
     initStartEnd(start, end)
-    if path is None:
+    if path is None or path == []:
         print("Path not Found")
         return False
     for node in path:
         node.setCell(4, COLOR["PURPLE"], True)
     print("Path Found")
+    print(alg, len(path))
     return True
 
 
@@ -92,9 +93,12 @@ def createButton(col, row, l, w, color, hl, msg, id):
 
 def algButtons():
     buttons = {}
-    bnt = f.createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
-    bnt2 = f.createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "AStar")
+    bfs = f.createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
+    astar = f.createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "AStar")
 
-    buttons["test"] = bnt
-    buttons["test2"] = bnt2
+    # init default setting
+    bfs.set = True
+
+    buttons[bfs.id] = bfs
+    buttons[astar.id] = astar
     return buttons
