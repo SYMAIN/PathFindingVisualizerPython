@@ -5,19 +5,18 @@ from main import pygame
 
 class BFS(GRAPH):
 
-    def __init__(self, start, end, walls, grid, buttons):
-        super().__init__(start, end, walls, grid, buttons)
+    def __init__(self, start, end, walls, grid, delay, buttons,sliders):
+        super().__init__(start, end, walls, grid, delay, buttons,sliders)
 
     def main(self):
 
         while len(self.qu) != 0:
             node = self.getNode()
             self.visited[node] = True
-            self.drawScreen()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return []
+            if (not self.checkEvents()):
+                return None
+
             if node.posEqual(self.end):
                 return f.createPath(self.start, self.end)
 

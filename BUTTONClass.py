@@ -19,7 +19,6 @@ class button:
         self.fontColor = COLOR[('BLACK')]
         self.italic = True
         self.bold = True
-
         # functions
         self.set = False
 

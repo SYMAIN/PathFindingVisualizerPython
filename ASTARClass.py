@@ -9,8 +9,8 @@ inf = float("inf")
 
 class Astar(GRAPH):
 
-    def __init__(self, start, end, walls, grid, buttons):
-        super().__init__(start, end, walls, grid, buttons)
+    def __init__(self, start, end, walls, grid, delay, buttons,sliders):
+        super().__init__(start, end, walls, grid, delay, buttons,sliders)
 
     def main(self):
         nodesValue = {}
@@ -27,11 +27,9 @@ class Astar(GRAPH):
             node = self.lowestCost(nodesValue)
             self.visited[node] = True
 
-            self.drawScreen()
+            if (not self.checkEvents()):
+                return None
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    return []
             if node.posEqual(self.end):
                 return f.createPath(self.start, self.end)
 
@@ -68,4 +66,5 @@ class Astar(GRAPH):
     def calcHeur(self, current, end):
         a = abs(current.x - end.x)
         b = abs(current.y - end.y)
-        return math.sqrt(a ** 2 + b ** 2)
+        # return math.sqrt(a ** 2 + b ** 2)
+        return a + b

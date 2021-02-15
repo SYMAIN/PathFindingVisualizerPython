@@ -2,7 +2,9 @@ from ASTARClass import Astar
 from BFSClass import BFS
 from BUTTONClass import button
 from NODEClass import NODE
+from SLIDERClass import slider
 from main import *
+import time
 
 
 def createGrid():
@@ -27,17 +29,19 @@ def valid(x, y):
     return 0 < x < width - 1 and 0 < y < height - 1
 
 
-def drawPath(alg, start, end, walls, grid, buttons):
+def drawPath(alg, start, end, walls, grid, delay, buttons,sliders):
     path = []
     clearPath(grid)
     if alg == "BFS":
-        path = BFS(start, end, walls, grid, buttons).main()
+        path = BFS(start, end, walls, grid, delay, buttons,sliders).main()
     elif alg == "ASTAR":
-        path = Astar(start, end, walls, grid, buttons).main()
+        path = Astar(start, end, walls, grid, delay, buttons,sliders).main()
 
     initStartEnd(start, end)
-    if path is None or path == []:
+    if path == []:
         print("Path not Found")
+        return True
+    if path is None:
         return False
     for node in path:
         node.setCell(4, COLOR["PURPLE"], True)
@@ -61,7 +65,7 @@ def initStartEnd(start, end):
     end.setEnd()
 
 
-def reDrawScreen(grid, buttons):
+def reDrawScreen(grid, buttons,sliders):
     screen.fill(COLOR["GREY"])  # set background color
     # draw grid
     for i in grid:
@@ -69,6 +73,9 @@ def reDrawScreen(grid, buttons):
             cell.draw(screen)
     for bnt in buttons.values():
         bnt.draw(screen)
+
+    for s in sliders:
+        s.draw()
     pygame.display.update()
 
 
@@ -93,8 +100,8 @@ def createButton(col, row, l, w, color, hl, msg, id):
 
 def algButtons():
     buttons = {}
-    bfs = f.createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
-    astar = f.createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "AStar")
+    bfs = createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
+    astar = createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "AStar")
 
     # init default setting
     bfs.set = True
@@ -102,3 +109,21 @@ def algButtons():
     buttons[bfs.id] = bfs
     buttons[astar.id] = astar
     return buttons
+
+def createSlider(name,val,maxi,mini,xpos,ypos):
+    return slider(name,val,maxi,mini,xpos,ypos)
+
+def delayTimer(sec):
+    max = sec
+    start = time.time()
+    while True:
+        ### Do other stuff, it won't be blocked
+        time.sleep(sec)
+
+        ### This will be updated every loop
+        remaining = max + start - time.time()
+        print(remaining)
+
+        ### Countdown finished, ending loop
+        if remaining <= 0:
+            break

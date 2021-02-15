@@ -18,7 +18,9 @@ COLOR = {
     "YELLOW": (255, 255, 0),
     "BLUE": (0, 0, 255),
     "PURPLE": (170, 0, 204),
-    "DARKGREY": (50, 50, 50)
+    "DARKGREY": (50, 50, 50),
+    "TRANS" : (1, 1, 1)
+
 }
 pygame.init()
 WIDTH, HEIGHT = (800, 800)
@@ -44,6 +46,7 @@ class DISPLAY:
     def run(self):  # main loop
         run = True
         clock = pygame.time.Clock()
+        delay = 0
 
         # events
         startEnd = (False, -1)  # drag, id--> 0=start,1=end
@@ -54,6 +57,9 @@ class DISPLAY:
 
         # init the algorithm selection buttons
         buttons = f.algButtons()
+
+        sliders = []
+        sliders.append(f.createSlider("speed", 1, 1, 0.5, 655, 175))
 
         while run:
             # update events
@@ -85,18 +91,27 @@ class DISPLAY:
                                 wallDrag = True
 
                         # check if button is clicked
+                        clicked = False
                         for val in buttons.values():
-                            if val.set:
-                                if val.onButton(pygame.mouse.get_pos()) and val.id == self.alg:
-                                    val.set = True
-                                else:
-                                    val.set = False
-                            elif not val.set:
-                                if val.onButton(pygame.mouse.get_pos()) and val.id != self.alg:
-                                    val.set = True
-                                    self.alg = val.id
-                                else:
-                                    val.set = False
+                            if val.onButton(pygame.mouse.get_pos()):
+                                clicked = True
+                        if clicked:
+                            for val in buttons.values():
+                                if val.set:
+                                    if val.onButton(pygame.mouse.get_pos()) and val.id == self.alg:
+                                        val.set = True
+                                    else:
+                                        val.set = False
+                                elif not val.set:
+                                    if val.onButton(pygame.mouse.get_pos()) and val.id != self.alg:
+                                        val.set = True
+                                        self.alg = val.id
+                                    else:
+                                        val.set = False
+                        pos = pygame.mouse.get_pos()
+                        for s in sliders:
+                            if s.button_rect.collidepoint(pos):
+                                s.hit = True
 
                     # right click down
                     if event.button == 3:
@@ -115,6 +130,10 @@ class DISPLAY:
                     if event.button == 3:
                         removeDrag = False
 
+                    # unclick sliders
+                    for s in sliders:
+                        s.hit = False
+
                 if event.type == pygame.KEYDOWN:
                     # z key click -> clear all walls/paths
                     if event.key == pygame.K_z:
@@ -122,7 +141,7 @@ class DISPLAY:
 
                     # space key click -> start alg
                     if event.key == pygame.K_SPACE:
-                        a = f.drawPath(self.alg, self.start, self.end, self.walls, self.grid, buttons)
+                        a = f.drawPath(self.alg, self.start, self.end, self.walls, self.grid, delay, buttons, sliders)
                         if not a:
                             run = False
 
@@ -163,8 +182,18 @@ class DISPLAY:
                         current.setCell(0, -1, False)
                         self.walls.remove(current)
 
+            # move sliders
+            for s in sliders:
+                if s.hit:
+                    s.move()
+                    if s.name == "speed":
+                        # change speed
+                        print("speed:",s.val)
+                        delay = 1 - s.val
+
             # draw
-            f.reDrawScreen(self.grid, buttons)
+            f.reDrawScreen(self.grid, buttons,sliders)
+
             clock.tick(120)
         pygame.display.quit()
 
