@@ -90,7 +90,7 @@ class DISPLAY:
 
                 if event.type == pygame.KEYDOWN:
                     # z key click -> clear all walls/paths
-                    if event.key == pygame.K_z:
+                    if event.key == pygame.K_z or event.key == pygame.K_Z:
                         uf.clearALL(self.grid, self.walls)
 
                     # space key click -> start alg
@@ -100,7 +100,7 @@ class DISPLAY:
                             run = False
 
                     # x key click -> clear the paths created
-                    if event.key == pygame.K_x:
+                    if event.key == pygame.K_x or event.key == pygame.K_X:
                         uf.clearPath(self.grid)
 
             # move start/end
