@@ -32,6 +32,7 @@ class BFS(GRAPH):
             self.drawScreen()
             node.setVisted()
             self.clockTick()
+        return []
     def getNode(self):
         node = self.qu.pop(0)
         node.setNode()

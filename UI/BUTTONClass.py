@@ -1,4 +1,4 @@
-from main import pygame, COLOR, width, height
+from settings import *
 
 
 class button:
@@ -14,14 +14,17 @@ class button:
         self.msg = msg  # text
         self.id = id  # the purpose of the button
 
-        self.fontSize = 23
+        if "font" in buttonsInfo[id].keys():
+            self.fontSize = buttonsInfo[id]["font"]
+        else:
+            self.fontSize = 23
         self.fontColor = COLOR[('BLACK')]
         self.italic = True
         self.bold = True
 
         # functions
         self.highLighted = False
-        self.algSet = False
+        self.algSet = None
 
     def draw(self, screen):
         if self.highLighted or self.algSet:
@@ -32,7 +35,8 @@ class button:
         # font
         font = pygame.font.SysFont("comicsans", self.fontSize, self.bold, self.italic)
         label = font.render(self.msg, True, self.fontColor)
-        screen.blit(label, (self.rect.x + width / 2, self.rect.y + height / 2 - 5))
+        text_rect = label.get_rect(center=(self.rect.x + self.rect.width / 2, self.rect.y + self.rect.width/2 -20))
+        screen.blit(label, text_rect)
 
     def onButton(self, pos):
         if self.rect.collidepoint(pos[0], pos[1]):

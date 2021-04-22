@@ -35,6 +35,7 @@ def drawPath(alg, start, end, walls, grid, delay):
         print("Path not Found")
         return True
     if path is None:
+        print("Exited program")
         return False
     for node in path:
         node.setCell(4, COLOR["PURPLE"], True)

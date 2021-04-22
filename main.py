@@ -33,11 +33,11 @@ class DISPLAY:
         wallDrag = False
         removeDrag = False
 
-        # init the algorithm selection buttons
-        uf.algButtons()
+        # init buttons
+        uf.loadBUttons()
 
         # init sliders
-        uf.sliderUI()
+        uf.loadSlider()
 
         while run:
             # update events

@@ -50,6 +50,7 @@ class Astar(GRAPH):
             self.drawScreen()
             node.setVisted()
             self.clockTick()
+        return []
 
     def lowestCost(self, nodes):
         node = self.qu[0]

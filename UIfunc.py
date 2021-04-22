@@ -68,10 +68,8 @@ def clearALL(grid, walls):
 def createSlider(name,info):
     return slider(name,info["val"],info["maxi"],info["mini"],info["xpos"],info["ypos"])
 
-def sliderUI():
-    print(slidersInfo)
+def loadSlider():
     for name,s in slidersInfo.items():
-        print(s)
         newSlider = createSlider(name,s)
         sliders.append(newSlider)
 
@@ -84,16 +82,19 @@ def sliderClicked():
 def createButton(col, row, l, w, color, hl, msg, id):
     return button(col, row, l, w, color, hl, msg, id)
 
-def algButtons():
-    bfs = createButton(654, 24, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "BFS", "BFS")
-    astar = createButton(654, 104, 50, 100, COLOR["WHITE"], COLOR["TURQUOISE"], "ASTAR", "ASTAR")
+def loadBUttons():
+    for key,value in buttonsInfo.items():
+        buttons[key] = createButton(value["position"][0], value["position"][1], value["dimension"][0],
+                                    value["dimension"][1], value["color"], value["highLight"], value["msg"],
+                                    value["id"])
+        if key in algs:
+            buttons[key].algSet = False
 
-    # init default setting
-    bfs.highLighted = True
-    bfs.algSet = True
+        if key == "BFS":
+            # init the default alg
+            buttons[key].highLighted = True
+            buttons[key].algSet = True
 
-    buttons[bfs.id] = bfs
-    buttons[astar.id] = astar
 
 def buttonHover():
     # highlight button when hovering over
@@ -108,6 +109,8 @@ def buttonClicked(alg):
     buttonChanged = [False]
     for bnt in buttons.values():
         if bnt.onButton(pygame.mouse.get_pos()):
+            if bnt.algSet is None: # not a alg button
+                return alg
             if not bnt.algSet:
                 bnt.highlightButton()
                 alg = bnt.id
@@ -120,6 +123,8 @@ def buttonClicked(alg):
             if bnt == buttonChanged[1]:
                 continue
             else:
+                if bnt.algSet is None:
+                    continue
                 bnt.unhighlightButton()
                 bnt.algSet = False
     return alg

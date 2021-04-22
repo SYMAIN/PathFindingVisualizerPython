@@ -46,4 +46,4 @@ class GRAPH:
                 for s in sliders:
                     s.hit = False
         self.changeSpeed()
-        return 1
+        return True

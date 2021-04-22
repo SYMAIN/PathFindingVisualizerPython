@@ -12,13 +12,16 @@ COLOR = {
     "BLUE": (0, 0, 255),
     "PURPLE": (170, 0, 204),
     "DARKGREY": (50, 50, 50),
-    "TRANS" : (1, 1, 1)
+    "TRANS" : (1, 1, 1),
+    "DARKGREEN": (0,153,51)
 }
 pygame.init()
 
 # screen size
 WIDTH, HEIGHT = (800, 800)
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+
+algs = ["BFS","ASTAR"]
 
 # grid size base on squares
 # interface
@@ -40,10 +43,37 @@ slidersInfo = {
         "val":SliderValue,
         "maxi":SliderMax,
         "mini":SliderMin,
-        "xpos":655,
-        "ypos":275
+        "xpos":650,
+        "ypos":175
     }
 }
 
 # default button
 buttons = {}
+buttonsInfo = {
+    "BFS": {
+        "color":COLOR["WHITE"],
+        "highLight":COLOR["TURQUOISE"],
+        "msg": "BFS",
+        "id": "BFS",
+        "dimension": (50,100),
+        "position": (654,21)
+    },
+    "ASTAR": {
+        "color": COLOR["WHITE"],
+        "highLight": COLOR["TURQUOISE"],
+        "msg": "ASTAR",
+        "id": "ASTAR",
+        "dimension": (50, 100),
+        "position": (654, 104)
+    },
+    "INSTRUCTION": {
+        "color": COLOR["GREEN"],
+        "highLight": COLOR["DARKGREEN"],
+        "msg": "INSTRUCTION",
+        "id": "INSTRUCTION",
+        "dimension": (50, 100),
+        "position": (654, 504),
+        "font": 15
+    }
+}
