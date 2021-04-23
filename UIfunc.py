@@ -43,7 +43,8 @@ def reDrawScreen(grid):
         for cell in i:
             cell.draw(screen)
     for bnt in buttons.values():
-        bnt.draw(screen)
+        if buttonsInfo[bnt.id]["screen"] == "main":
+            bnt.draw(screen)
 
     for s in sliders:
         s.draw()
@@ -144,10 +145,14 @@ def instructions():
                 run = False
                 exit()
 
-            for key,bnt in buttons.items():
-                if key == "BACK":
-                    return
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for bnt in buttons.values():
+                    if bnt.onButton(pygame.mouse.get_pos()):
+                        if bnt.algSet is None:  # not a alg button
+                            if bnt.id == "INSTRU_BACK":
+                                run = False
 
+        # render text
         titlefont = pygame.font.SysFont("comicsans", 40)
         titleRect = pygame.Rect((0, 20, screen.get_rect().width, 80))
         rendered_title = render_textrect(instructionText["title"],titlefont,titleRect,COLOR["BLACK"],COLOR["GREY"],1)
@@ -161,7 +166,12 @@ def instructions():
         if rendered_title:
             screen.blit(rendered_title,titleRect.topleft)
 
+        # render button
+        for bnt in buttons.values():
+            if buttonsInfo[bnt.id]["screen"] == "instruction":
+                bnt.draw(screen)
 
+        buttonHover()
         pygame.display.update()
 
 class TextRectException:

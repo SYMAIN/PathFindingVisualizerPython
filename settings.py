@@ -57,7 +57,8 @@ buttonsInfo = {
         "msg": "BFS",
         "id": "BFS",
         "dimension": (50, 100),
-        "position": (654, 21)
+        "position": (654, 21),
+        "screen" : "main"
     },
     "ASTAR": {
         "color": COLOR["WHITE"],
@@ -65,7 +66,8 @@ buttonsInfo = {
         "msg": "ASTAR",
         "id": "ASTAR",
         "dimension": (50, 100),
-        "position": (654, 104)
+        "position": (654, 104),
+        "screen" : "main"
     },
     "INSTRUCTION": {
         "color": COLOR["GREEN"],
@@ -73,8 +75,18 @@ buttonsInfo = {
         "msg": "INSTRUCTION",
         "id": "INSTRUCTION",
         "dimension": (50, 100),
-        "position": (654, 504),
-        "font": 15
+        "position": (654, 704),
+        "font": 15,
+        "screen" : "main"
+    },
+    "INSTRU_BACK": {
+        "color": COLOR["TURQUOISE"],
+        "highLight": COLOR["BLUE"],
+        "msg": "BACK",
+        "id": "INSTRU_BACK",
+        "dimension": (50, 100),
+        "position": (50, 700),
+        "screen": "instruction"
     }
 }
 
