@@ -19,4 +19,5 @@ To get started left click or drag start/endpoint to the desire location on the g
 To erase everything including walls, and reset the grid, press ‘z’. 
 To erase the colours/pathfinding indicators, press ‘x’.
 
-![](game.png)
+<img src="https://github.com/QqWwEe123123123/PathFinding/blob/main/game.png?raw=true" width="500" height="550">
+<img src="https://github.com/QqWwEe123123123/PathFinding/blob/main/game2.png?raw=true" width="500" height="550">
